@@ -38,6 +38,9 @@ jobs:
     needs: ci
     runs-on: self-hosted
     steps:
+    
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Modify values file
         shell: bash
