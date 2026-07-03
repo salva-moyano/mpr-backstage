@@ -36,7 +36,7 @@ jobs:
 
   cd:
     needs: ci
-    run-ons: self-hosted
+    runs-on: self-hosted
     steps:
 
       - name: Modify values file
