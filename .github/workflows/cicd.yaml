@@ -38,7 +38,7 @@ jobs:
     needs: ci
     runs-on: self-hosted
     steps:
-    
+
       - name: Modify values file
         shell: bash
         run: | 
@@ -50,6 +50,7 @@ jobs:
         uses: EndBug/add-and-commit@v9
         with:
           message: 'Update values.yaml with commit ${{needs.ci.outputs.commit_id}}'
+          pull: '--rebase --autostash'
 
       - name: install argocd
         shell: bash
