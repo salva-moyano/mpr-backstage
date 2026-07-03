@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Shorten commit id
         shell: bash
         run: |
@@ -33,3 +33,38 @@ jobs:
           tags: salvamoyanopalma/python-app:${{ env.COMMIT_ID }}
     outputs:
       commit_id: ${{ env.COMMIT_ID }}
+
+  cd:
+    needs: ci
+    run-ons: self-hosted
+    steps:
+
+      - name: Modify values file
+        shell: bash
+        run: | 
+          echo ${{needs.ci.outputs.commit_id}}
+          pip install yq
+          yq -Yi '.img.tag = "${{needs.ci.outputs.commit_id}}"' python-app/charts/python-app/values.yaml
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: 'Update values.yaml with commit ${{needs.ci.outputs.commit_id}}'
+
+      - name: install argocd
+        shell: bash
+        run: | 
+          curl -ksSL -o argocd https://argocd-server.argocd/download/argocd-linux-amd64
+          chmod +x argocd
+          sudo mv ./argocd /usr/local/bin/argocd
+
+      - name: Argocd app sync
+        shell: bash
+        run: |
+          argocd login argo-server.argocd \
+            --insecure \
+            --grpc-web \
+            --username admin \
+            --password ${{ secrets.ARGOCD_PASSWORD }} \
+          argocd app sync python-app
+        
