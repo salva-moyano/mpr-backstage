@@ -100,4 +100,17 @@ echo cUhLMXk4NFhUbkctSUc2RA== | base64 -d -> qHK1y84XTnG-IG6D
 #Token 
 git remote add origin https://github.com/salva-moyano/mpr-backstage.git
 git remote set-url origin https://salvamoyanopalma:TU_TOKEN@github.com/salva-moyano/mpr-backstage.git
+
+# Hacer un reset de una rama 
+git checkout --orphan nueva_rama
+git add .
+git commin -m "initial commit"
+git branch -D ${BRANCHE}
+git branch -m ${BRANCHE}
+git push orgin ${branch} --force
+
+# Verificar que no queda nada en el historial
+
+git log --oneline
+
 ```
