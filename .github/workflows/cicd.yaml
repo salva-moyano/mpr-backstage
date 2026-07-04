@@ -42,23 +42,11 @@ jobs:
 
     steps:
 
-      - name: Install yq
-        run: |
-          wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O yq
-          chmod +x yq
-          sudo mv yq /usr/local/bin/yq
-
       - name: Modify values file
         shell: bash
         run: | 
           echo ${{needs.ci.outputs.commit_id}}
-          yq -Yi '.img.tag = "${{needs.ci.outputs.commit_id}}"' python-app/charts/python-app/values.yaml
-
-      - name: Pull latest change
-        run: |
-          git config --global user.email "github-actions@github.com"
-          git config --global user.name "github-actions"
-          git pull origin main --rebase
+          yq -Yi '.image.tag = "${{needs.ci.outputs.commit_id}}"' python-app/charts/python-app/values.yaml
 
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
