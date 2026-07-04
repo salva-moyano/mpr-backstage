@@ -2,8 +2,8 @@ replicaCount: 1
 image:
   repository: salvamoyanopalma/python-app
   pullPolicy: IfNotPresent
-  tag: v1
-imagePullSecrets: 
+  tag: ee5c3a
+imagePullSecrets:
   - name: regcred
 nameOverride: ""
 fullnameOverride: ""
