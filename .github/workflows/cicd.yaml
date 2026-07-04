@@ -37,6 +37,9 @@ jobs:
   cd:
     needs: ci
     runs-on: self-hosted
+    permissions:
+      contents: write
+
     steps:
 
       - name: Modify values file
@@ -45,6 +48,12 @@ jobs:
           echo ${{needs.ci.outputs.commit_id}}
           pip install yq
           yq -Yi '.img.tag = "${{needs.ci.outputs.commit_id}}"' python-app/charts/python-app/values.yaml
+
+      - name: Pull latest change
+        run: |
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "github-actions"
+          git pull origin main --rebase
 
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
