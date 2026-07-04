@@ -42,11 +42,16 @@ jobs:
 
     steps:
 
+      - name: Install yq
+        run: |
+          wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O yq
+          chmod +x yq
+          sudo mv yq /usr/local/bin/yq
+
       - name: Modify values file
         shell: bash
         run: | 
           echo ${{needs.ci.outputs.commit_id}}
-          pip install yq
           yq -Yi '.img.tag = "${{needs.ci.outputs.commit_id}}"' python-app/charts/python-app/values.yaml
 
       - name: Pull latest change
