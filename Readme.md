@@ -113,4 +113,52 @@ git push orgin ${branch} --force
 
 git log --oneline
 
+# Proble with argocd
+kubectl patch configmap argocd-rbac-cm -n argocd \        
+  --type merge \
+  -p '{
+    "data": {
+      "policy.default": "role:admin",
+      "policy.csv": "g, admin, role:admin\np, role:admin, applications, sync, */*, allow\np, role:admin, applications, get, */*, allow\np, role:admin, applications, update, */*, allow"
+    }
+  }'
+kubectl get configmap argocd-rbac-cm -n argocd -o yaml  
+
+Debe mostrar:
+yamldata:
+  policy.default: role:admin
+  policy.csv: |
+    g, admin, role:admin
+    p, role:admin, applications, sync, */*, allow
+    p, role:admin, applications, get, */*, allow
+    p, role:admin, applications, update, */*, allow
+    
+kubectl rollout restart deployment argocd-server -n argocd
+kubectl rollout status deployment argocd-server -n argocd
+
+#Backstage
+
+docker images
+docker pull node:22-alpine
+
+docker run --rm -p 3000:3000 -ti -v /Users/smoyano/dev/devops/backstage/backstage-app:/app -w /app node:22 bash
+
+docker run --rm -e AUTH_GITHUB_CLIENT_ID=Ov23liy4PgIKd2DjsY1K  -e AUTH_GITHUB_CLIENT_SECRET=4aeeea37a2c0c258fab4ca86b276284b13f881e8  -p 3000:3000 -p 7007:7007 -ti -v /Users/smoyano/dev/devops/backstage/backstage-app:/app -w /app node:22 bash
+
+
+npx @backstage/create-app@latest
+yarn start
+
+https://backstage.io/docs/auth/
+
+
+
+yarn --cwd packages/backend add @backstage/plugin-auth-backend-module-github-provider
+
+https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme/team-a-group.yaml
+
+https://backstage.io/docs/features/software-catalog/descriptor-format/#kind-component
+
 ```
+
+¿Qué es IDP?
