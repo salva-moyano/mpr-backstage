@@ -5,6 +5,7 @@ metadata:
   description: Python app that displays time.
   annotations:
     github.com/project-slug: salva-moyano/mpr-backstage
+    backstage.io/techdocs-ref: dir:.
 spec:
   type: service
   owner: development

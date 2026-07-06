@@ -143,7 +143,7 @@ docker pull node:22-alpine
 
 docker run --rm -p 3000:3000 -ti -v /Users/smoyano/dev/devops/backstage/backstage-app:/app -w /app node:22 bash
 
-docker run --rm -e AUTH_GITHUB_CLIENT_ID=Ov23liy4PgIKd2DjsY1K  -e AUTH_GITHUB_CLIENT_SECRET=4aeeea37a2c0c258fab4ca86b276284b13f881e8  -p 3000:3000 -p 7007:7007 -ti -v /Users/smoyano/dev/devops/backstage/backstage-app:/app -w /app node:22 bash
+docker run --rm -e AUTH_GITHUB_CLIENT_ID=  -e AUTH_GITHUB_CLIENT_SECRET= -e GITHUB_TOKEN=  -p 3000:3000 -p 7007:7007 -ti -v /Users/smoyano/dev/devops/backstage/backstage-app:/app -w /app node:22 bash
 
 
 npx @backstage/create-app@latest
@@ -158,6 +158,25 @@ yarn --cwd packages/backend add @backstage/plugin-auth-backend-module-github-pro
 https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme/team-a-group.yaml
 
 https://backstage.io/docs/features/software-catalog/descriptor-format/#kind-component
+
+
+#Dockerfile
+
+FROM node:18-bookworm-slim
+ 
+RUN apt-get update && apt-get install -y python3 python3-pip python3-venv
+ 
+ENV VIRTUAL_ENV=/opt/venv
+RUN python3 -m venv $VIRTUAL_ENV
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+ 
+RUN pip3 install mkdocs-techdocs-core
+
+# Template
+
+http://localhost:3000/create/actions
+
+https://backstage.io/docs/features/software-templates/builtin-actions
 
 ```
 
